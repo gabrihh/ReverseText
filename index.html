@@ -1,0 +1,264 @@
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+        
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@8..144,400;8..144,500;8..144,600;8..144,700&display=swap" rel="stylesheet">
+        
+        <link rel="stylesheet" href="https://unpkg.com/lucide-static@latest/font/lucide.css" />
+        
+        <title>ReverseText — by GabrihhDEV</title>
+        
+        <style>
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+            
+            body {
+                font-family: 'Inter', system-ui, sans-serif;
+                font-stretch: normal;
+                font-style: normal;
+                background: #f1f1f1;
+                color: #000;
+                scroll-behavior: smooth;
+                overscroll-behavior: contain;
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+                text-rendering: optimizeLegibility;
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+                overflow: hidden;
+            }
+
+            body::-webkit-scrollbar {
+                display: none;
+            }
+
+            body::-webkit-scrollbar-track {
+                display: none;
+            }
+
+            body::-webkit-scrollbar-thumb {
+                display: none;
+            }
+            
+            .app{
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+                padding: 47px;
+                background: rgba(255, 255, 255, 0.85);
+                width: 75vw;
+                max-width: 650px;
+                border-radius: 17px;
+                border: solid 2px rgba(0,0,0,0.3);
+                box-shadow: 0 0 5px rgba(0,0,0,0.1);
+            }
+            
+            .inputArea{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border: solid 1.5px rgba(0,0,0,0.3);                
+                border-radius: 30px;
+                position: relative;
+                padding: 5px;
+            }
+            
+            .inputArea textarea{
+                background: transparent;
+                border: none;
+                padding: 10px 5px;
+                width: 265px;
+                max-width: 600px;
+                resize: none;
+                outline: none;
+                height: 40px;
+                line-height: 20px;
+                font-size: 14.1px;
+                font-family: 'Inter', system-ui, sans-serif;
+                font-stretch: normal;
+                font-style: normal;
+            }
+            
+            .inputArea .icon{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+            }
+            
+            .inputArea button{
+                margin: 0 7px;
+                background: linear-gradient(to left, rgba(0,0,0,0.1),  rgba(0,0,0,0.2));
+                border: none;
+                font-weight: 500;
+                font-size: 14.3px;
+                padding: 7px 12px;
+                border-radius: 30px;
+                outline: solid 0.1px rgba(0,0,0,0.1);
+                opacity: 0;
+                transform: rotate(10deg) scale(0.8);
+                transition: all 0.12s ease-in-out;
+            }
+            
+            .inputArea button:hover{
+                box-shadow: 0 0 3px rgba(0,0,0,0.7);
+            }
+            
+            .inputArea button.active{
+                opacity: 1;
+                transform: rotateX(0) scale(1);
+            }
+            
+            footer{
+                position: absolute;
+                bottom: 10px;
+                left: 50%;
+                transform: translateX(-50%);
+                display: flex;
+                flex-direction: column;
+                gap: 1px;
+                text-align: center;
+                font-size: 13px;
+            }
+            
+            footer div{
+                display: flex;
+                flex-direction: row;
+                gap: 5px;
+                justify-content: center;
+            }
+            
+            footer p{
+                text-align: center;
+            }
+        </style>
+        
+    </head>
+    
+    <body>
+    
+        <div class="app">
+        
+            <h1>ReverseText</h1>
+           <label>Enter the text to reverse.</label>
+           
+           <div class="inputArea">
+               <div class="icon-arrow-left-right icon"></div>
+               <textarea placeholder="Ex: I love reversing texts!"></textarea>
+               <button>Reverse</button>
+           </div>
+           
+        </div>
+        
+        <footer>
+            <p>&copy; 2026 GabrihhDEV</p>
+            <div><div class="icon-scale"></div><a href="LICENSE">MIT License</a></div>
+        </footer>
+    
+        <script defer>
+        
+            const input = $(".inputArea textarea");
+            const reverseButton = $(".inputArea button");
+        
+            function reverseText(string){
+                return string.trim().split("").reverse().join("");
+            }
+            
+            input.on("input", () => {
+                if(input.value().trim().length > 0){
+                    reverseButton.addClass("active");
+                } else {
+                    reverseButton.removeClass("active");
+                }
+            });
+            
+            reverseButton.on("click", () => {
+                input.value(reverseText(input.value()));
+            });
+            
+            
+// HELPER
+
+function $(selector) {
+    const elements = document.querySelectorAll(selector);
+
+    return {
+        elements: elements,
+
+
+        hide: function() {
+            this.elements.forEach(el => el.style.display = 'none');
+            return this; 
+        },
+
+        show: function() {
+            this.elements.forEach(el => el.style.display = '');
+            return this;
+        },
+
+        text: function(newText) {
+            if(newText === undefined) {
+                return this.elements[0]?.textContent || '';
+            } else {
+                this.elements.forEach(el => el.textContent = newText);
+                return this;
+            }
+        },
+
+        html: function(newHTML) {
+            if(newHTML === undefined) {
+                return this.elements[0]?.innerHTML || '';
+            } else {
+                this.elements.forEach(el => el.innerHTML = newHTML);
+                return this;
+            }
+        },
+
+        on: function(event, callback) {
+            this.elements.forEach(el => el.addEventListener(event, callback));
+            return this;
+        },
+
+        addClass: function(cls) {
+            this.elements.forEach(el => el.classList.add(cls));
+            return this;
+        },
+
+        removeClass: function(cls) {
+            this.elements.forEach(el => el.classList.remove(cls));
+            return this;
+        },
+
+        toggleClass: function(cls) {
+            this.elements.forEach(el => el.classList.toggle(cls));
+            return this;
+        },
+        
+        value: function(newValue) {
+            if (newValue === undefined) {
+                return this.elements[0]?.value || "";
+            } else {
+                this.elements.forEach(el => el.value = newValue);
+                return this;
+            }
+        }
+    };
+}
+            
+        </script>
+        
+    </body>
+</html>
